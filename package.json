@@ -1,0 +1,35 @@
+{
+  "name": "gendiff-antlu",
+  "version": "0.1.0",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "description": "Configuration files comparer",
+  "scripts": {
+    "build": "babel src --out-dir dist --source-maps inline",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "file comparer",
+    "diff"
+  ],
+  "author": "Anton",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.20.2"
+  },
+  "dependencies": {
+    "commander": "^2.20.3"
+  }
+}
