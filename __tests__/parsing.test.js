@@ -25,3 +25,10 @@ test('A diff for YAML files is correct', () => {
   expect(compareTwoFiles(beforeFilePath, afterFilePath))
     .toBe(diffFileContents);
 });
+
+test('A diff for INI files is correct', () => {
+  const beforeFilePath = path.join(fixturesPath, 'before.ini');
+  const afterFilePath = path.join(fixturesPath, 'after.ini');
+  expect(compareTwoFiles(beforeFilePath, afterFilePath))
+    .toBe(diffFileContents);
+});

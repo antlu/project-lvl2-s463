@@ -3,6 +3,7 @@ import path from 'path';
 
 import _ from 'lodash';
 import yaml from 'js-yaml';
+import ini from 'ini';
 
 function keyValueToStr([key, value]) {
   return `${key}: ${value}`;
@@ -25,6 +26,7 @@ function getFilesType(pathToFile1, pathToFile2) {
     '.json': 'JSON',
     '.yaml': 'YAML',
     '.yml': 'YAML',
+    '.ini': 'INI',
   };
 
   const file1Type = fileTypes[path.extname(pathToFile1)];
@@ -37,6 +39,7 @@ function getParser(filesType) {
   const parsers = {
     JSON: JSON.parse,
     YAML: yaml.safeLoad,
+    INI: ini.parse,
   };
   return parsers[filesType];
 }
@@ -44,8 +47,8 @@ function getParser(filesType) {
 function compareTwoFiles(pathToFile1, pathToFile2) {
   const filesType = getFilesType(pathToFile1, pathToFile2);
   const parser = getParser(filesType);
-  const contentsBefore = parser(fs.readFileSync(pathToFile1));
-  const contentsAfter = parser(fs.readFileSync(pathToFile2));
+  const contentsBefore = parser(fs.readFileSync(pathToFile1, 'utf-8'));
+  const contentsAfter = parser(fs.readFileSync(pathToFile2, 'utf-8'));
 
   const entriesBefore = Object.entries(contentsBefore);
   const commonLines = entriesBefore.filter(([key]) => _.has(contentsAfter, key));
