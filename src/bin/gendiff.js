@@ -3,7 +3,7 @@
 import program from 'commander';
 
 import { version } from '../../package.json';
-import { showDifference } from '..';
+import showDifference from '..';
 
 program
   .description('Compares two configuration files and shows the difference.')

@@ -1,0 +1,4 @@
+timeout: 20
+port: 8000
+verbose: true
+host: hexlet.io
