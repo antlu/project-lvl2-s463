@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 
+import program from 'commander';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
+import { version } from '../package.json';
 import makeAST from './parsing';
-import renderAST from './rendering';
+import renderAST from './formatters';
 
 const fileTypes = {
   '.json': 'JSON',
@@ -41,7 +43,7 @@ function getFilesContents(pathToFile1, pathToFile2) {
 function compareTwoFiles(pathToFile1, pathToFile2) {
   const [contentsBefore, contentsAfter] = getFilesContents(pathToFile1, pathToFile2);
   const AST = makeAST(contentsBefore, contentsAfter);
-  return renderAST(AST);
+  return renderAST(AST, program.format);
 }
 
 function showDifference(pathToFile1, pathToFile2) {
@@ -49,5 +51,12 @@ function showDifference(pathToFile1, pathToFile2) {
   console.log(diff);
 }
 
+program
+  .description('Compares two configuration files and shows the difference.')
+  .arguments('<firstConfig> <secondConfig>')
+  .option('-f, --format [type]', 'set output format', 'tree')
+  .version(version)
+  .action(showDifference);
+
 export { compareTwoFiles };
-export default showDifference;
+export default program;
