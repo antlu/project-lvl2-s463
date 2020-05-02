@@ -5,8 +5,8 @@ const offset = ' '.repeat(4);
 function stringifyNode(node, indent) {
   function stringifyValue(nodeValue) {
     if (nodeValue instanceof Object) {
-      const strValue = Object.entries(nodeValue).map(([key, value]) => `${key}: ${value}`).join('\n');
-      return `{\n${offset}${indent}  ${strValue}\n  ${indent}}`;
+      const strValue = Object.entries(nodeValue).map(([key, value]) => `${offset}${indent}  ${key}: ${value}`).join('\n');
+      return `{\n${strValue}\n  ${indent}}`;
     }
     return nodeValue;
   }
