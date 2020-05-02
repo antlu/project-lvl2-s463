@@ -1,14 +1,19 @@
 import _ from 'lodash';
 
 function stringifyValue(value) {
-  return value instanceof Object ? '[complex value]' : value;
+  const valueTypes = {
+    object: '[complex value]',
+    string: `'${value}'`,
+  };
+  const valueType = typeof value;
+  return valueTypes[valueType] || value;
 }
 
 function stringifyNode(node) {
   const nodeTypes = {
-    changed: `Property '${node.ancestry}' was changed from '${stringifyValue(node.oldValue)}' to '${stringifyValue(node.value)}'`,
+    changed: `Property '${node.ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.value)}`,
     removed: `Property '${node.ancestry}' was removed`,
-    added: `Property '${node.ancestry}' was added with value: '${stringifyValue(node.value)}'`,
+    added: `Property '${node.ancestry}' was added with value: ${stringifyValue(node.value)}`,
   };
   return nodeTypes[node.type] || '';
 }

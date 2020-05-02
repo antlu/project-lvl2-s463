@@ -40,14 +40,14 @@ function getFilesContents(pathToFile1, pathToFile2) {
   return [contentsBefore, contentsAfter];
 }
 
-function compareTwoFiles(pathToFile1, pathToFile2) {
+function compareTwoFiles(pathToFile1, pathToFile2, outputFormat = 'tree') {
   const [contentsBefore, contentsAfter] = getFilesContents(pathToFile1, pathToFile2);
   const AST = makeAST(contentsBefore, contentsAfter);
-  return renderAST(AST, program.format);
+  return renderAST(AST, outputFormat);
 }
 
 function showDifference(pathToFile1, pathToFile2) {
-  const diff = compareTwoFiles(pathToFile1, pathToFile2);
+  const diff = compareTwoFiles(pathToFile1, pathToFile2, program.format);
   console.log(diff);
 }
 

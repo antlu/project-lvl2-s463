@@ -1,12 +1,12 @@
 import renderAsTree from './tree';
 import renderAsText from './text';
-// import renderAsJSON from './json';
+import renderAsJSON from './json';
 
 function renderAST(AST, format) {
   const formatters = {
     tree: renderAsTree,
     text: renderAsText,
-    // json: renderAsJSON,
+    json: renderAsJSON,
   };
   const render = formatters[format];
   if (!render) throw new Error('Unsupported output format.');
