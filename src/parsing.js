@@ -7,17 +7,17 @@ function makeTreeChildren(contentsBefore, contentsAfter) {
       0: key => ({ key, value: contentsBefore[key], type: 'preserved' }),
       1: (key) => {
         const oldValue = contentsBefore[key];
-        const value = contentsAfter[key];
+        const newValue = contentsAfter[key];
         const type = 'changed';
-        if (oldValue instanceof Object && value instanceof Object) {
+        if (oldValue instanceof Object && newValue instanceof Object) {
           return {
             key,
             type: 'preserved',
-            children: makeTreeChildren(oldValue, value),
+            children: makeTreeChildren(oldValue, newValue),
           };
         }
         return {
-          key, value, oldValue, type,
+          key, newValue, oldValue, type,
         };
       },
       2: key => ({ key, value: contentsBefore[key], type: 'removed' }),
@@ -45,8 +45,4 @@ function makeTreeChildren(contentsBefore, contentsAfter) {
   }, []);
 }
 
-function makeAST(contentsBefore, contentsAfter) {
-  return makeTreeChildren(contentsBefore, contentsAfter);
-}
-
-export default makeAST;
+export default makeTreeChildren;

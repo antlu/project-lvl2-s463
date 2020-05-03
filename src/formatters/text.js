@@ -11,7 +11,7 @@ function stringifyValue(value) {
 
 function stringifyNode(node) {
   const nodeTypes = {
-    changed: `Property '${node.ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.value)}`,
+    changed: `Property '${node.ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.newValue)}`,
     removed: `Property '${node.ancestry}' was removed`,
     added: `Property '${node.ancestry}' was added with value: ${stringifyValue(node.value)}`,
   };
@@ -22,11 +22,11 @@ function renderAST(nodes) {
   function iter(nodes_, ancestry) {
     return nodes_.map((node) => {
       const delimiter = ancestry ? '.' : '';
-      const updAncestry = `${ancestry}${delimiter}${node.key}`;
+      const updatedAncestry = `${ancestry}${delimiter}${node.key}`;
       if (_.has(node, 'children')) {
-        return iter(node.children, updAncestry);
+        return iter(node.children, updatedAncestry);
       }
-      const nodeWithAncestry = { ...node, ancestry: updAncestry };
+      const nodeWithAncestry = { ...node, ancestry: updatedAncestry };
       return stringifyNode(nodeWithAncestry);
     }).join('\n').trimStart();
   }
