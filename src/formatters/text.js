@@ -13,9 +13,9 @@ function stringifyNode(node) {
   const nodeTypes = {
     changed: `Property '${node.ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.newValue)}`,
     removed: `Property '${node.ancestry}' was removed`,
-    added: `Property '${node.ancestry}' was added with value: ${stringifyValue(node.value)}`,
+    added: `Property '${node.ancestry}' was added with value: ${stringifyValue(node.newValue)}`,
   };
-  return nodeTypes[node.type] || '';
+  return nodeTypes[node.type];
 }
 
 function renderAST(nodes) {
@@ -28,7 +28,7 @@ function renderAST(nodes) {
       }
       const nodeWithAncestry = { ...node, ancestry: updatedAncestry };
       return stringifyNode(nodeWithAncestry);
-    }).join('\n').trimStart();
+    }).filter(_.identity).join('\n');
   }
   return iter(nodes, '');
 }

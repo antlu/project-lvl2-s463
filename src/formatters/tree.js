@@ -10,7 +10,7 @@ function stringifyNode(node, indent) {
     }
     return nodeValue;
   }
-  const nodeKeyValue = `${node.key}: ${stringifyValue(node.value)}`;
+  const nodeKeyValue = `${node.key}: ${stringifyValue(node.oldValue || node.newValue)}`;
   const nodeTypes = {
     preserved: `  ${nodeKeyValue}`,
     changed: `- ${node.key}: ${stringifyValue(node.oldValue)}\n${indent}+ ${node.key}: ${stringifyValue(node.newValue)}`,
@@ -31,8 +31,8 @@ function renderChildren(nodes, depth = 0) {
   }).join('\n');
 }
 
-function renderAST(node) {
-  return `{\n${renderChildren(node)}\n}`;
+function renderAST(nodes) {
+  return `{\n${renderChildren(nodes)}\n}`;
 }
 
 export default renderAST;
