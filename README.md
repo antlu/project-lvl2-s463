@@ -8,6 +8,8 @@ A tool for showing the difference between configuration files.
 
 Supported formats: JSON, YAML, INI.
 
+Files of different formats are comparable to each other.
+
 ---
 
 ## Installation

@@ -1,5 +1,1 @@
-function renderAST(nodes) {
-  return JSON.stringify(nodes);
-}
-
-export default renderAST;
+export default JSON.stringify;

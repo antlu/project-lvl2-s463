@@ -1,13 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import { compareTwoFiles } from '../src';
+import compareTwoFiles from '../src';
 
-let fixturesPath;
-
-beforeAll(() => {
-  fixturesPath = path.join(__dirname, '__fixtures__');
-});
+const getFilePath = filename => path.join(__dirname, '__fixtures__', filename);
 
 test.each([
   ['.json', 'tree'],
@@ -17,9 +13,9 @@ test.each([
   ['.yml', 'text'],
   ['.ini', 'text'],
 ])('A diff for %s files is correct [%s format]', (extension, format) => {
-  const beforeFilePath = path.join(fixturesPath, `before${extension}`);
-  const afterFilePath = path.join(fixturesPath, `after${extension}`);
-  const diffFilePath = path.join(fixturesPath, `diff.${format}`);
+  const beforeFilePath = getFilePath(`before${extension}`);
+  const afterFilePath = getFilePath(`after${extension}`);
+  const diffFilePath = getFilePath(`diff.${format}`);
   const diffFileData = fs.readFileSync(diffFilePath, 'utf-8').trimEnd();
 
   expect(compareTwoFiles(beforeFilePath, afterFilePath, format))

@@ -1,13 +1,13 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-function getParseFunction(fileType) {
+const getParseFunction = (dataType) => {
   const functions = {
-    JSON: JSON.parse,
-    YAML: yaml.safeLoad,
-    INI: ini.parse,
+    json: JSON.parse,
+    yaml: yaml.safeLoad,
+    ini: ini.parse,
   };
-  return functions[fileType];
-}
+  return functions[dataType];
+};
 
 export default getParseFunction;

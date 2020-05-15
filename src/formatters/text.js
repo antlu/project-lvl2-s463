@@ -1,36 +1,33 @@
 import _ from 'lodash';
 
-function stringifyValue(value) {
+const stringifyValue = (value) => {
   const valueTypes = {
     object: '[complex value]',
     string: `'${value}'`,
   };
   const valueType = typeof value;
   return valueTypes[valueType] || value;
-}
+};
 
-function stringifyNode(node) {
+const stringifyNode = (node, ancestry) => {
   const nodeTypes = {
-    changed: `Property '${node.ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.newValue)}`,
-    removed: `Property '${node.ancestry}' was removed`,
-    added: `Property '${node.ancestry}' was added with value: ${stringifyValue(node.newValue)}`,
+    changed: `Property '${ancestry}' was changed from ${stringifyValue(node.oldValue)} to ${stringifyValue(node.newValue)}`,
+    removed: `Property '${ancestry}' was removed`,
+    added: `Property '${ancestry}' was added with value: ${stringifyValue(node.newValue)}`,
   };
   return nodeTypes[node.type];
-}
+};
 
-function renderAST(nodes) {
-  function iter(nodes_, ancestry) {
-    return nodes_.map((node) => {
-      const delimiter = ancestry ? '.' : '';
-      const updatedAncestry = `${ancestry}${delimiter}${node.key}`;
-      if (_.has(node, 'children')) {
-        return iter(node.children, updatedAncestry);
-      }
-      const nodeWithAncestry = { ...node, ancestry: updatedAncestry };
-      return stringifyNode(nodeWithAncestry);
-    }).filter(_.identity).join('\n');
-  }
+const renderAST = (nodes) => {
+  const iter = (nodes_, ancestry) => nodes_.map((node) => {
+    const delimiter = ancestry ? '.' : '';
+    const updatedAncestry = `${ancestry}${delimiter}${node.key}`;
+    if (node.children.length > 0) {
+      return iter(node.children, updatedAncestry);
+    }
+    return stringifyNode(node, updatedAncestry);
+  }).filter(_.identity).join('\n');
   return iter(nodes, '');
-}
+};
 
 export default renderAST;
