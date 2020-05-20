@@ -2,31 +2,31 @@ import _ from 'lodash';
 
 const offset = ' '.repeat(4);
 
-const stringifyNode = (node, indent) => {
-  const stringifyValue = (nodeValue) => {
-    if (!_.isObject(nodeValue)) return nodeValue;
-    const stringifiedValue = Object.entries(nodeValue).map(([key, value]) => (
-      `${offset}${indent}  ${key}: ${value}`
-    )).join('\n');
-    return `{\n${stringifiedValue}\n  ${indent}}`;
-  };
-  const nodeTypes = {
-    preserved: `  ${node.key}: ${stringifyValue(node.oldValue)}`,
-    changed: `- ${node.key}: ${stringifyValue(node.oldValue)}\n${indent}+ ${node.key}: ${stringifyValue(node.newValue)}`,
-    removed: `- ${node.key}: ${stringifyValue(node.oldValue)}`,
-    added: `+ ${node.key}: ${stringifyValue(node.newValue)}`,
-  };
-  return `${indent}${nodeTypes[node.type]}`;
+const stringifyValue = (nodeValue, indent) => {
+  if (!_.isObject(nodeValue)) return nodeValue;
+  const stringifiedValue = Object.entries(nodeValue).map(([key, value]) => (
+    `${offset}${indent}  ${key}: ${value}`
+  )).join('\n');
+  return `{\n${stringifiedValue}\n  ${indent}}`;
 };
 
 const renderChildren = (nodes, depth = 0) => {
   const indent = `${offset.repeat(depth)}  `;
   return nodes.map((node) => {
-    if (node.children.length > 0) {
-      const children = renderChildren(node.children, depth + 1);
-      return `${indent}  ${node.key}: {\n${children}\n  ${indent}}`;
+    switch (node.type) {
+      case 'subtree':
+        return `${indent}  ${node.key}: {\n${renderChildren(node.children, depth + 1)}\n  ${indent}}`;
+      case 'preserved':
+        return `${indent}  ${node.key}: ${stringifyValue(node.oldValue, indent)}`;
+      case 'changed':
+        return `${indent}- ${node.key}: ${stringifyValue(node.oldValue, indent)}\n${indent}+ ${node.key}: ${stringifyValue(node.newValue, indent)}`;
+      case 'removed':
+        return `${indent}- ${node.key}: ${stringifyValue(node.oldValue, indent)}`;
+      case 'added':
+        return `${indent}+ ${node.key}: ${stringifyValue(node.newValue, indent)}`;
+      default:
+        throw new Error(`Unknown node type: ${node.type}`);
     }
-    return stringifyNode(node, indent);
   }).join('\n');
 };
 

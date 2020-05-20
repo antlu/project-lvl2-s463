@@ -9,7 +9,7 @@ const renderAST = (AST, format) => {
     json: renderAsJSON,
   };
   const render = formatters[format];
-  if (!render) throw new Error('Unsupported output format.');
+  if (!render) throw new Error(`Unsupported output format: ${format}`);
   return render(AST);
 };
 
